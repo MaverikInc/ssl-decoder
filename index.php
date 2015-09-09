@@ -79,17 +79,19 @@ foreach (glob("functions/*.php") as $filename) {
             $warntxt = " <sup>(<strong>".htmlspecialchars(count(array_unique($data["data"]["connection"]["warning"])))."</strong>)</sup>";
           }
         ?>
-        <li><a href="#conndata"><strong>0</strong>: Connection Data <?php echo $warntxt; ?></a></li>
+        <li><a href="#conndata"><strong>0</strong>: Connection Data <?php echo $warntxt; $warntxt = ''; ?></a></li>
         <?php
         foreach ($chain_data as $key => $value) {
           if (count($value['warning']) >= 1) {
             $warntxt = " <sup>(<strong>".htmlspecialchars(count($value['warning']))."</strong>)</sup>";
           }
           echo "<li><a href='#cert".(string)$key."'><strong>".$key."</strong> : ". htmlspecialchars($value["cert_data"]["subject"]["CN"]) . $warntxt . "</a></li>";
+          $warntxt = "";
         }
         ?>
         <li><a href="<?php echo(htmlspecialchars($current_folder)); ?>">Try another website</a></li>
         <li><hr></li>
+        <li><a href="https://certificatemonitor.org/">Certificate Expiry Monitor</a></li>
         <li><a href="https://cipherli.st/">Strong Cipherlists</a></li>
         <li><a href="https://raymii.org/s/tutorials/Strong_SSL_Security_On_Apache2.html">Apache SSL Tutorial</a></li>
         <li><a href="https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html">NGINX SSL Tutorial</a></li>

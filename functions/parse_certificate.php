@@ -252,8 +252,9 @@ function cert_parse($data) {
   echo "<td>";
   foreach ( explode("DNS:", $data['cert_data']['extensions']['subjectAltName']) as $altName ) {
     if ( !empty(str_replace(',', " ", "$altName"))) {
+      echo "<span style='font-family:monospace;'>";
       echo htmlspecialchars(str_replace(',', " ", "$altName"));
-      echo "<br>";
+      echo "</span><br>";
     }
   } 
   echo "</td>";
@@ -275,9 +276,9 @@ function cert_parse($data) {
   echo "</tr>";
   echo "<tr>";
   echo "<td>Full Subject</td>";
-  echo "<td>";
+  echo "<td><span style='font-family:monospace;'>";
   echo htmlspecialchars($data['cert_data']['name']);
-  echo "</td>";
+  echo "</span></td>";
   echo "</tr>";
   echo "<tr>";
   echo "<td colspan='2'><strong>Issuer</strong></td>";
@@ -503,7 +504,7 @@ function cert_parse($data) {
     echo "<tr>";
     echo "<td>Serial</td>";
     echo "<td>";
-    echo htmlspecialchars($data['serialNumber']);
+    echo "<span style='font-family:monospace;'>" . htmlspecialchars($data['serialNumber']) . "</span>";
     echo "</td>";
     echo "</tr>";
   }
@@ -518,15 +519,15 @@ function cert_parse($data) {
   echo "</tr>";
   echo "<tr>";
   echo "<td>";
-  echo "<a href='https://wiki.debian.org/SSLkeys'>Weak debian key</a>";
+  echo "Weak debian key";
   echo "</td>";
   if ($data["key"]["weak_debian_rsa_key"] == 1) {
     echo "<td>";
-    echo "<span class='text-danger glyphicon glyphicon-exclamation-sign'></span><span class='text-danger'> - This is a weak debian key. Replace it as soon as possible.</span>";
+    echo "<span class='text-danger glyphicon glyphicon-exclamation-sign'></span><span class='text-danger'> - This is a <a href='https://wiki.debian.org/SSLkeys'>weak debian key</a>. Replace it as soon as possible.</span>";
     echo "</td>";
   } else {
     echo "<td>";
-    echo "<span class='text-success glyphicon glyphicon-exclamation-sign'></span><span class='text-success'> - This is not a weak debian key.</span>";
+    echo "This is not a <a href='https://wiki.debian.org/SSLkeys'>weak debian key</a>.";
     echo "</td>";
   }
   echo "</tr>";
@@ -633,7 +634,7 @@ function cert_parse($data) {
     echo "<tr>";
     echo "<td><a href='https://raymii.org/s/articles/HTTP_Public_Key_Pinning_Extension_HPKP.html'>SPKI Hash</a></td>";
     echo "<td>";
-    print(htmlspecialchars($data['key']['spki_hash']));
+    print("<span style='font-family:monospace;'>" . htmlspecialchars($data['key']['spki_hash']) . "</span>");
     echo "</td>";
     echo "</tr>";
   }
@@ -865,7 +866,7 @@ function cert_parse_json($raw_cert_data, $raw_next_cert_data=null, $host=null, $
     fclose($blacklist_file);
     if ($key_in_blacklist == true) {
       $result["key"]["weak_debian_rsa_key"] = "true";
-      $result['warning'][] = "Weak Debian key found. Remove this key right now and create a new one. See <a href='https://wiki.debian.org/SSLkeys'>for more info</a>.";
+      $result['warning'][] = "Weak Debian key found. Remove this key right now and create a new one.";
     }
   } else if (isset($key_details['dsa'])) {
     $result["key"]["type"] = "dsa";
